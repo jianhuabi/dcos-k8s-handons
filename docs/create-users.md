@@ -5,7 +5,7 @@ In the following, we are going to leverage kubernete x509 based user authenticat
 * * *
 
 
-# 1. Generating user specific CSR
+## 1. Generating user specific CSR
 
 There are many tools can be used to generate user csr. I will use [OpenSSL](https://www.openssl.org/) for csr creation. 
 
@@ -26,7 +26,7 @@ output: mbi.csr
 ```
 **The /CN name is the user name in kubernete cluster we will register in the following steps**
 
-# 2. Signing the user CSR via Kubernetes ca
+## 2. Signing the user CSR via Kubernetes ca
 
 This created CSR shall be passed to kubernetes for signing. There is a default csr controller that handles CertificateSigningRequest. 
 
@@ -76,7 +76,7 @@ kubectl get csr user-request-mbi -o jsonpath='{.status.certificate}' \
 
 The saved crt will be used to generate user specific KUBECONFIG in below step 4.
 
-# 3. Create clusterrolebinding or rolebinding to grant k8s object CRUD previledge for this user
+## 3. Create clusterrolebinding or rolebinding to grant k8s object CRUD previledge for this user
 
 After approve user CSR in kubernete cluster, a User object is created which user name is /CN in certs. In our sample is mbi. 
 We shall link user with a cluster role or namespace role by clusterrolebinding or rolebinding.
@@ -85,7 +85,7 @@ We shall link user with a cluster role or namespace role by clusterrolebinding o
 kubectl create clusterrolebinding mbi-admin --clusterrole=admin --user=mbi
 ```
 
-# 4. Genereate user specific KUBECONFIG
+## 4. Genereate user specific KUBECONFIG
 
 Now you can create user KUBECONFIG for user to access kubernete apiserver. 
 
