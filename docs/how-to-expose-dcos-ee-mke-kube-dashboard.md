@@ -158,3 +158,42 @@ With all set, you should be able to access kubernetes-dashboard directly with yo
 ```
 https://kubernete-dashboard.example.com:30443/
 ```
+
+# 3 Use Ingress Path rule to avoid carrying hostname/URL
+
+If you prefer to access kubernetes-dashboard with kube-node-pub public IP without a host url like below. 
+
+
+```
+https://34.209.10.136:30443/
+```
+
+
+you shall create a Ingress Host path rule captured in below. 
+
+```
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.kubernetes.io/ssl-passthrough: "true"
+    nginx.org/ssl-backends: "kubernetes-dashboard"
+    kubernetes.io/ingress.allow-http: "false"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    nginx.ingress.kubernetes.io/service-upstream: "true"
+  name: dashboard-ingress
+  namespace: kube-system
+spec:
+  tls:
+  - hosts:
+    - kubernete-dashboard.example.com
+    secretName: kubernetes-dashboard-certs
+  rules:
+  #- host: kubernete-dashboard.example.com
+  -  http:
+      paths:
+      - path: /
+        backend:
+          serviceName: kubernetes-dashboard
+          servicePort: 443
+```
