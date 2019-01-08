@@ -69,9 +69,9 @@ In DCOS k8s, we leverage client-side load-balancer which is IPVS to expose apise
 As depicted in the diagram, DCOS will assign IP address as well as mesos-dns record to each kube control plan instance. Upon receiving metadata of kube control plan instance, the DCOS minuteman will generate IPVS record for apiserver instances which is advertised in the form as below.
 
 
-'''
+```
 apiserver.kubernetes-cluster1.l4lb.thisdcos.directory
-'''
+```
 
 Kubenetes components like scheduler, controller manager as well as kubelet nodes shall reference this DNS name to access kubernetes apiserver serivce.
 
