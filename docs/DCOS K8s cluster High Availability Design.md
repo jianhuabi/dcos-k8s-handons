@@ -8,7 +8,7 @@ The High Availability deployment of K8s cluster is an effort of a series of clus
 Let’s review kubernetes cluster control plane components design in below.
 
 
-![image.png](.attachments/image-2985ba95-9655-44cc-9e4f-7dabbf0dc798.png)
+![image.png](https://s3-us-west-2.amazonaws.com/github-png/k8s-cluster.png)
 
 The kubernetes cluster control plane are implemented with Etcd service, kube apiserver, kube controller manager and kube sheduler. Hence, the kubernetes cluster control plane high availability really is relying on each of those components high availability deployment.
 
@@ -22,7 +22,7 @@ Etcd is a consensus-based distributed system, whose core state is maintained via
 
 DCOS K8s cluster HA deployment automatically launches 3 etcd instances by default with placement constraints set as UNIQUE to make sure etcd instances are landed on different hosts resources.
 
-![image.png](.attachments/image-124b7736-abe0-4b35-905f-5ae9cd349e25.png)
+![image.png](https://s3-us-west-2.amazonaws.com/github-png/etcd-ha-0.png)
 
 Each Etcd instance will get a mesos-dns with its form in below.
 
@@ -63,7 +63,7 @@ Nodes joining the cluster leverage a front end or client-side load-balancer for 
 
 In DCOS k8s, we leverage client-side load-balancer which is IPVS to expose apiserver to other components including the controller manager, scheduler and kubelet nodes.
 
-![image.png](.attachments/image-c5e3d94d-fbcf-46ad-98e8-9a778e0d8976.png)
+![image.png](https://s3-us-west-2.amazonaws.com/github-png/apiserver-ha-0.png)
 
 As depicted in the diagram, DCOS will assign IP address as well as mesos-dns record to each kube control plan instance. Upon receiving metadata of kube control plan instance, the DCOS minuteman will generate IPVS record for apiserver instances which is advertised in the form as below.
 
