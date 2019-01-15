@@ -1,3 +1,5 @@
+# How Kubernetes Cluster on DC/OS implement High Availability
+
 DCOS kubernetes cluster deployment offers customer with production grade high available environment by default. In this article, I am trying to demonstrate how DCOS kubernetes deployment addresses control plane HA in production deployment. 
 
 
