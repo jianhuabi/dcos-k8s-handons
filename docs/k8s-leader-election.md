@@ -1,12 +1,12 @@
 # Deep dive into Kubernetes Simple Leader Election
 
-I always think Kubernetes Controller Manager or Scheduler components are leveraging etcd to perform leader election ever since
-the I learn these component should have leader in HA mode. But recently, when I tried to review Kubernetes Controller Manager
-**config.yaml**  I suddenly noticed there is actualy no command flag for adding **ectd connectstring**. 
+I always think Kubernetes Controller Manager or Scheduler components are leveraging **etcd** to perform leader election ever since
+the I learnt these components should have their leader in HA mode. But recently, when I tried to review Kubernetes Controller Manager
+**config.yaml**  I suddenly noticed there is actualy no such command flag for adding **ectd connectstring**. 
 
-I decided to ask Google for any information around mechanism of K8s control plane component leader election. There are good
-stuff online such as [Simple leader election with Kubernetes and Docker](https://kubernetes.io/blog/2016/01/simple-leader-election-with-kubernetes/)
-but the leader election mechanism kubernetes performs is confusing. Following statements were what I copied from the 
+I decided to ask Google for any information around mechanism of K8s control plane components leader election. There are good
+stuffs online such as [Simple leader election with Kubernetes and Docker](https://kubernetes.io/blog/2016/01/simple-leader-election-with-kubernetes/)
+but the leader election mechanism that kubernetes performs is confusing. Following statements were what I copied from the 
 formentioned blog. 
 
 ```
@@ -35,9 +35,9 @@ I coundn't find any fine explaination online, that is a shame. So I decide to fi
 
 ## Who is leader of K8s controller manager. 
 
-Before jumping into code implemetation, I learned from the blog on how to inspect who is a leader of a leader election enabled service like k8s controller manager.
+Before jumping into code implemetation, I learned from the blog on how to inspect who is the leader of a leader election enabled service like k8s controller manager.
 
-In kubernetes, any leader enabled service will generate a EndPoint. Take k8s controller manager as example. 
+In kubernetes, any leader enabled service will generate a EndPoint with a annotation suggests leadership in the service. Take k8s controller manager as example. 
 
 ```
 > kubectl describe ep -n kube-system kube-controller-manager
@@ -50,7 +50,7 @@ Annotations:  control-plane.alpha.kubernetes.io/leader:
 Subsets:
 Events:  <none>
 ```
-The ep annotation suggests **Annotations: control-plane.alpha.kubernetes.io/leader** instance who's identity or hostname is **a3e0b5e2-e869** is the leader. 
+The endpoint annotation suggests **Annotations: control-plane.alpha.kubernetes.io/leader** that instance who's identity or hostname is **a3e0b5e2-e869** currently is the leader. 
 
 ```
 {
@@ -62,11 +62,11 @@ The ep annotation suggests **Annotations: control-plane.alpha.kubernetes.io/lead
 }
 ```
 
-That JSON object seems give us some clue on k8s leader election. 
+That JSON object give us some clue on k8s leader election. 
 
 ## K8S leaderelection.go
 
-K8s leader election package is implemented at [leaderelection.go](https://raw.githubusercontent.com/kubernetes/contrib/master/election/vendor/k8s.io/kubernetes/pkg/client/leaderelection/leaderelection.go)
+K8s leader election package is hosted at [leaderelection.go](https://raw.githubusercontent.com/kubernetes/contrib/master/election/vendor/k8s.io/kubernetes/pkg/client/leaderelection/leaderelection.go)
 
 ```
 
