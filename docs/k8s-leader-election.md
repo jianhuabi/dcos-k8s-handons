@@ -1,7 +1,7 @@
 # Deep dive into Kubernetes Simple Leader Election
 
 I always think Kubernetes Controller Manager or Scheduler components are leveraging **etcd** to perform leader election ever since I learned these components should have their leader in HA mode. But recently, when I tried to review Kubernetes Controller Manager
-**config.yaml**  I suddenly noticed there is actualy no such command flag for adding **etcd connectstring**. 
+**config.yaml**  I suddenly noticed there is actualy no such command flag for adding **etcd connectionstring**. 
 
 I decided to ask Google for any information around mechanism of K8s control plane components leader election. There are good
 stuffs online such as [Simple leader election with Kubernetes and Docker](https://kubernetes.io/blog/2016/01/simple-leader-election-with-kubernetes/)
