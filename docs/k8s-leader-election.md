@@ -12,16 +12,19 @@ formentioned blog.
 ```
 ## Implementing leader election in Kubernetes
 
-The first requirement in leader election is the specification of the set of candidates for becoming the leader. 
-Kubernetes already uses Endpoints to represent a replicated set of pods that comprise a service, so we will 
-re-use this same object. (aside: You might have thought that we would use ReplicationControllers, but they are 
-tied to a specific binary, and generally you want to have a single leader even if you are in the process of 
-performing a rolling update)
+The first requirement in leader election is the specification of the set of candidates for becoming 
+the leader. 
+
+Kubernetes already uses Endpoints to represent a replicated set of pods that comprise a service, 
+so we will re-use this same object. (aside: You might have thought that we would use 
+ReplicationControllers, but they are tied to a specific binary, and generally you want to have a 
+single leader even if you are in the process of performing a rolling update)
 
 To perform leader election, we use two properties of all Kubernetes API objects:
 
-    ResourceVersions - Every API object has a unique ResourceVersion, and you can use these versions to perform 
-    compare-and-swap on Kubernetes objects
-    Annotations - Every API object can be annotated with arbitrary key/value pairs to be used by clients.
+    ResourceVersions - Every API object has a unique ResourceVersion, and you can use these 
+    versions to perform compare-and-swap on Kubernetes objects
+    Annotations - Every API object can be annotated with arbitrary key/value 
+    pairs to be used by clients.
 
 ```
